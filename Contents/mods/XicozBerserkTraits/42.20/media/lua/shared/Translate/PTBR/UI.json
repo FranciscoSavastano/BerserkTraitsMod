@@ -1,0 +1,13 @@
+{
+    "UI_trait_xicoz_berserk": "Berserk",
+    "UI_trait_xicoz_berserkdesc": "Seus golpes são selvagens e implacaveis, causando dano bonus (até 50%) porem causando mais desgaste em sua arma.",
+    "UI_trait_xicoz_ragebuff": "Furia",
+    "UI_trait_xicoz_ragebuffdesc": "Seus golpes são mais firmes, causando dano bonus(25%).",
+    "UI_trait_xicoz_deadeye": "Olho Morto",
+    "UI_trait_xicoz_deadeyedesc": "Toda vez que sua arma de fogo encontra seu alvo, seu proximo disparo se torna mais preciso, aumentando tambem a chance de headshots, acumula ate 5 vezes",
+    "UI_deadeyestacks": "Foco",
+    "UI_berserk_tier1": "Sua fúria está se acumulando...",
+    "UI_berserk_tier2": "Você sente sua fúria tomando conta.",
+    "UI_berserk_tier3": "Você sente-se enfurecido.",
+    "UI_berserk_tierdown": "Sua fúria está se dissipando..."
+}

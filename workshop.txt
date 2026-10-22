@@ -1,0 +1,10 @@
+version=1
+title=Xicoz Berserk Traits
+description=[h2]Adds two new positive traits based on melee damage bonus and one firearm focused one.[/h2]
+description=Adds three new positive traits, Berserk wich gives up to 50% damage bonus at the cost of more weapon wear, Fury wich plainly gives 25% damage bonus and Deadeye wich consecutive sucessful firearm hits grant more precision and headshot chance up to 5 times.
+description=
+description=
+description=GitHub: https://github.com/FranciscoSavastano/BerserkTraitsMod
+description=[h3]Copyright 2026 Nekro. This item is not authorized for posting on Steam, except under the Steam account named Nekro.[/h3]
+tags=Build 42;
+visibility=unlisted
