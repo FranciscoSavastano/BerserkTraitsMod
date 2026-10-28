@@ -8,17 +8,54 @@ local BERSERK_TIERS = {
     },
     {
         threshold = 5,
-        multiplier = 1.2,
+        multiplier = 1.1,
         description = "UI_berserk_tier2"
     },
     {
         threshold = 10,
-        multiplier = 1.5,
+        multiplier = 1.2,
         description = "UI_berserk_tier3"
     },
+    {
+        threshold = 15,
+        multiplier = 1.3,
+        description = "UI_berserk_tier4"
+    },
+    {
+        threshold = 20,
+        multiplier = 1.5,
+        description = "UI_berserk_tier5"
+    }
 }
 
+local XICOZ_SIDE_DEBUG = false
+
+-- Trait logic runs only on the attacker's own client (or in SP). In MP the event also
+-- fires on the server and on every other client, which applied the bonus several times.
+local function isOwnedHere(player)
+    if isServer() then return false end
+    if not instanceof(player, "IsoPlayer") then return false end
+    return player:isLocalPlayer()
+end
+
+-- Shoves report the weapon's full damage, so scaling it made pushes lethal.
+local function isStrike(actor)
+    return not actor:isDoShove()
+end
+
+local function addHaloText(player, text, arrowUp, color)
+    HaloTextHelper.addTextWithArrow(player, text, arrowUp, color, color)
+end
+
 local function onBerserkHit(actor, target, weapon, damage)
+    if XICOZ_SIDE_DEBUG then
+        print("[Xicoz] hit server=" .. tostring(isServer()) .. " client=" .. tostring(isClient()) ..
+              " local=" .. tostring(instanceof(actor, "IsoPlayer") and actor:isLocalPlayer()) ..
+              " shove=" .. tostring(instanceof(actor, "IsoPlayer") and actor:isDoShove()) ..
+              " damage=" .. tostring(damage))
+    end
+    if not isOwnedHere(actor) then return end
+    if not isStrike(actor) then return end
     if not actor:hasTrait(XicozTraitsRegistries.berserk) then return end
     local now = getTimestamp()
     local actorData = actor:getModData()
@@ -47,7 +84,7 @@ local function onBerserkHit(actor, target, weapon, damage)
 
     if tierIndex ~= (actorData.berserkTierIndex or 1) then
         actorData.berserkTierIndex = tierIndex
-        HaloTextHelper.addTextWithArrow(actor, getText(tier.description), true, HaloTextHelper.getColorRed(), HaloTextHelper.getColorRed())
+        addHaloText(actor, getText(tier.description), true, HaloTextHelper.getColorRed())
     end
 
     local extraDamage = damage * 0.5 * tier.multiplier
@@ -70,6 +107,8 @@ local function onBerserkHit(actor, target, weapon, damage)
 end
 
 local function onRageHit(actor, target, _weapon, damage)
+    if not isOwnedHere(actor) then return end
+    if not isStrike(actor) then return end
     if not actor:hasTrait(XicozTraitsRegistries.ragebuff) then return end
     local extraDamage = damage * 0.25
     target:setHealth(target:getHealth() - extraDamage)
@@ -87,6 +126,7 @@ local DEADEYE_MAX_STACKS = 5
 local DEADEYE_DEBUG      = false
 
 local function onDeadeyeHit(actor, target, weapon, _damage)
+    if not isOwnedHere(actor) then return end
     if not actor:hasTrait(XicozTraitsRegistries.deadeye) then return end
     if not weapon or not weapon:isAimedFirearm() then return end
 
@@ -99,7 +139,7 @@ local function onDeadeyeHit(actor, target, weapon, _damage)
     local aimLevel       = actor:getPerkLevel(Perks.Aiming)
     local headshotChance = actorData.deadeyeStacks * 10 + aimLevel * 2
 
-    HaloTextHelper.addTextWithArrow(actor, getText("UI_deadeyestacks") .. ": " .. actorData.deadeyeStacks, true, HaloTextHelper.getColorGreen(), HaloTextHelper.getColorGreen())
+    addHaloText(actor, getText("UI_deadeyestacks") .. ": " .. actorData.deadeyeStacks, true, HaloTextHelper.getColorGreen())
 
     if DEADEYE_DEBUG then
         print("[Deadeye] stacks=" .. actorData.deadeyeStacks ..
@@ -120,6 +160,7 @@ end
 
 -- Avoid updating the stacks on confirmed hit, instead on playerUpdate.
 local function onDeadeyeUpdate(player)
+    if not isOwnedHere(player) then return end
     if not player:hasTrait(XicozTraitsRegistries.deadeye) then return end
     local actorData = player:getModData()
     if not actorData.deadeyeLastHit then return end
@@ -127,13 +168,14 @@ local function onDeadeyeUpdate(player)
 
     if (getTimestamp() - actorData.deadeyeLastHit) > DEADEYE_TIMEOUT then
         if DEADEYE_DEBUG then print("[Deadeye] stacks expired on timer") end
-        HaloTextHelper.addTextWithArrow(player, getText("UI_deadeyestacks") .. ": " .. actorData.deadeyeStacks, false, HaloTextHelper.getColorRed(), HaloTextHelper.getColorRed())
+        addHaloText(player, getText("UI_deadeyestacks") .. ": " .. actorData.deadeyeStacks, false, HaloTextHelper.getColorRed())
         actorData.deadeyeStacks  = 0
         actorData.deadeyeLastHit = nil
     end
 end
 
 local function onBerserkUpdate(player)
+    if not isOwnedHere(player) then return end
     if not player:hasTrait(XicozTraitsRegistries.berserk) then return end
     local actorData = player:getModData()
     if not actorData.berserkLastHit then return end
@@ -159,7 +201,7 @@ local function onBerserkUpdate(player)
 
         if newTierIndex < oldTierIndex then
             actorData.berserkTierIndex = newTierIndex
-            HaloTextHelper.addTextWithArrow(player, getText("UI_berserk_tierdown"), false, HaloTextHelper.getColorRed(), HaloTextHelper.getColorRed())
+            addHaloText(player, getText("UI_berserk_tierdown"), false, HaloTextHelper.getColorRed())
         end
 
         if actorData.berserkInCombatSeconds <= 0 then
