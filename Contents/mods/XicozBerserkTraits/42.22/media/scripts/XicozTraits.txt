@@ -1,0 +1,31 @@
+module XicozTraits {
+        character_trait_definition XicozTraits:berserk
+        {
+            IsProfessionTrait = false,
+            DisabledInMultiplayer = false,
+            CharacterTrait = XicozTraits:berserk,
+            Cost = 6,
+            UIName = UI_trait_xicoz_berserk,
+            UIDescription = UI_trait_xicoz_berserkdesc,
+        }
+
+        character_trait_definition XicozTraits:ragebuff
+        {
+            IsProfessionTrait = false,
+            DisabledInMultiplayer = false,
+            CharacterTrait = XicozTraits:ragebuff,
+            Cost = 4,
+            UIName = UI_trait_xicoz_ragebuff,
+            UIDescription = UI_trait_xicoz_ragebuffdesc,
+        }
+
+        character_trait_definition XicozTraits:deadeye
+        {
+            IsProfessionTrait = false,
+            DisabledInMultiplayer = false,
+            CharacterTrait = XicozTraits:deadeye,
+            Cost = 12,
+            UIName = UI_trait_xicoz_deadeye,
+            UIDescription = UI_trait_xicoz_deadeyedesc,
+        }
+}

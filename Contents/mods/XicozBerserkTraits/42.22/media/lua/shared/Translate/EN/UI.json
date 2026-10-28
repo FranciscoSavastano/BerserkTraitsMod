@@ -1,0 +1,15 @@
+{
+    "UI_trait_xicoz_berserk": "Berserk",
+    "UI_trait_xicoz_berserkdesc": "Your strikes are savage, dealing heavy bonus damage(up to 50%) but wearing down your weapon faster.",
+    "UI_trait_xicoz_ragebuff": "Rage",
+    "UI_trait_xicoz_ragebuffdesc": "Your strikes are firm, dealing bonus damage(25%).",
+    "UI_trait_xicoz_deadeye": "Deadeye",
+    "UI_trait_xicoz_deadeyedesc": "Everytime your firearm finds its target, your next shot becomes more precise and increasing the chance of headshots, stacks up to 5 times",
+    "UI_deadeyestacks": "Focus",
+    "UI_berserk_tier1": "Your rage is building up...",
+    "UI_berserk_tier2": "You feel your blood boiling.",
+    "UI_berserk_tier3": "You feel unstoppable!",
+    "UI_berserk_tier4": "You are in a state of pure fury.",
+    "UI_berserk_tier5": "You are berserk!",
+    "UI_berserk_tierdown": "Your rage is fading..."
+}
